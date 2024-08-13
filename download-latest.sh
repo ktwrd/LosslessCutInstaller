@@ -10,4 +10,4 @@ npx svgexport icon.svg icon-64.png 64:64
 npx svgexport icon.svg icon-32.png 32:32
 
 convert icon-256.png icon-128.png icon-64.png icon-32.png icon.ico
-makensis setup.nsi -V4
+makensis -V4 setup.nsi
