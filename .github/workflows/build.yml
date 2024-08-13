@@ -1,0 +1,25 @@
+name: Build
+on:
+    schedule:
+        - cron: '0 10 * * *'
+    workflow_dispatch:
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        steps:
+            - run: git config --global core.autocrlf false
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                node-version: 20
+            - name: Install dependencies
+              shell: bash
+              run: sudo apt update; sudo apt install nsis nsis-pluginapi imagemagick p7zip-full;
+            - name: Create Installer
+              shell: bash
+              run: ./download-latest.sh
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                name: Windows Installer
+                path: LosslessCut-win-x64.exe

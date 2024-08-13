@@ -1,0 +1,6 @@
+*.exe
+dist/
+*.7z
+*.svg
+*.png
+*.ico
