@@ -1,5 +1,6 @@
 name: Build
 on:
+    push:
     schedule:
         - cron: '0 10 * * *'
     workflow_dispatch:
@@ -17,7 +18,7 @@ jobs:
               run: sudo apt update; sudo apt install nsis nsis-pluginapi imagemagick p7zip-full;
             - name: Create Installer
               shell: bash
-              run: ./download-latest.sh
+              run: chmod +x download-latest.sh; ./download-latest.sh
             - name: Upload artifacts
               uses: actions/upload-artifact@v3
               with:
