@@ -8,6 +8,10 @@ jobs:
     release:
         runs-on: ubuntu-latest
         steps:
+            - name: Set current date as env variable
+              run: |
+                _ts=$(date -d '${{ github.event.head_commit.timestamp}}' +'%Y%m%d%H%M')
+                echo "target_tag=${_ts}" >> $GITHUB_ENV
             - run: git config --global core.autocrlf false
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
@@ -15,12 +19,23 @@ jobs:
                 node-version: 20
             - name: Install dependencies
               shell: bash
-              run: sudo apt update; sudo apt install nsis nsis-pluginapi imagemagick p7zip-full;
+              run: |
+                sudo apt update
+                sudo apt install nsis nsis-pluginapi imagemagick p7zip-full -y
             - name: Create Installer
               shell: bash
-              run: chmod +x download-latest.sh; ./download-latest.sh
+              run: |
+                chmod +x download-latest.sh
+                ./download-latest.sh
             - name: Upload artifacts
               uses: actions/upload-artifact@v3
               with:
                 name: Windows Installer
                 path: LosslessCut-win-x64.exe
+            - name: Create release
+              uses: softprops/action-gh-release@v1
+              with:
+                files: LosslessCut-win-x64.exe
+                tag_name: ${{ env.target_tag }}
+                draft: false
+                prerelease: false
