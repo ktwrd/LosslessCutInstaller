@@ -38,4 +38,4 @@ jobs:
                 files: LosslessCut-win-x64.exe
                 tag_name: ${{ env.target_tag }}
                 draft: false
-                prerelease: false
+                prerelease: true
